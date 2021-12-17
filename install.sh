@@ -24,8 +24,8 @@ function CheckRPC() {
 
     echo && echo " RPC Check !" && echo
 
-    rpc_status=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "getblockcount" }' \
-        -H 'content-type: application/json' "$NODE_RPC" |
+    rpc_status=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "latestblock" }' \
+        -H 'content-type: application/json' "http://127.0.0.1:3032" |
         jq -r .result)
 
     if ! [[ "$rpc_status" =~ $re ]]; then
