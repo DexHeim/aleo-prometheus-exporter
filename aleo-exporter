@@ -119,8 +119,8 @@ function metrics_collector() {
     fi
     
     #leaderboard
-    aleo_leaderboard_position = $(echo $leaderboard | jq ".leaderboard[0].position")
-    aleo_leaderboard_cnt_users = $(echo $leaderboard | jq ".count")
+    aleo_leaderboard_position=$(echo $leaderboard | jq ".leaderboard[0].position")
+    aleo_leaderboard_cnt_users=$(echo $leaderboard | jq ".count")
     aleo_leaderboard_cnt_blocks_mined=$(echo $leaderboard | jq ".leaderboard[0].blocksMined | length")
     aleo_leaderboard_last_block_mined=$(echo $leaderboard | jq ".leaderboard[0].lastBlockMined")
     aleo_leaderboard_score=$(echo $leaderboard | jq ".leaderboard[0].score")
