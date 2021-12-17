@@ -27,10 +27,13 @@ function CheckRPC() {
     rpc_status=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "latestblock" }' \
         -H 'content-type: application/json' "http://127.0.0.1:3032" |
         jq -r .result)
+        
+    echo $rpc_status
+    echo $re
 
     if ! [[ "$rpc_status" =~ $re ]]; then
         echo " Can't get valid response from RPC, or node is dead or RPC is on another port number." && echo
-        exit
+        #exit
     else
         echo " RPC response with current node heigh: $rpc_status"
     fi
