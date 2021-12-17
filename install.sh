@@ -10,8 +10,8 @@
 
 EXPORTER_END_POINT="127.0.0.1:9100"
 
-# node RPC ( default 3030 )
-NODE_RPC="http://127.0.0.1:3030"
+# node RPC ( default 3032 )
+NODE_RPC="http://127.0.0.1:3032"
 
 if [ "$EUID" -ne 0 ]; then
     echo && echo " Please run as root !" && echo
