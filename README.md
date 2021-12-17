@@ -14,18 +14,18 @@ Couple of settings in dashboard require node-exporter ( set port for it in prome
 sudo curl -s -L https://raw.githubusercontent.com/DexHeim/aleo-prometheus-exporter/main/install.sh | bash
 ```
 
-_Default port: 9101 otherwise adjust, check install.sh script for more insformation._
+_Default port: 9200 otherwise adjust, check install.sh script for more insformation._
 
 ### Test after install:
 
 ```bash
-curl -s 127.0.0.1:9101
+curl -s 127.0.0.1:9200
 ```
 
 Prometheus configuration example: _( keep variables names, or it will take long time to configure dashboard )_
 
 * _prometheus - general prometheus metrics_ 9090
-* _aleo-exporter - node-exporter_ 9101
+* _aleo-exporter - node-exporter_ 9200
 
 ```prometheus
 global:
@@ -39,7 +39,7 @@ scrape_configs:
 
   - job_name: 'aleo-exporter'
     static_configs:
-    - targets: ['127.0.0.1:9101']
+    - targets: ['127.0.0.1:9200']
 ```
 
 _Datasource name in Grafana default "Prometheus"_
