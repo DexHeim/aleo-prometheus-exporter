@@ -8,7 +8,7 @@
 # Default port in repository is 9101, if this does not fit, edit '/etc/xinet.d/aleo-exporter' and change 'port = 9100' according setup requirements.
 # If port is busy for whatever reason, endpoint will not be up and curl shows nothing.
 
-EXPORTER_END_POINT="127.0.0.1:9101"
+EXPORTER_END_POINT="127.0.0.1:9200"
 
 # node RPC ( default 3032 )
 NODE_RPC="http://127.0.0.1:3032"
