@@ -111,7 +111,7 @@ touch /opt/metrics.d/aleo.metrics
 # restart xinetd
 echo " Restarting xinetd server, applying configuration ..."
 systemctl restart xinetd && sleep 5
-systemctl status xinetd && echo
+journalctl -u xinetd -f -n 10 && echo
 
 # check if endpoint is ready
 echo " End point test:" && echo
