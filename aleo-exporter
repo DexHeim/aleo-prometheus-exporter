@@ -13,7 +13,7 @@ function get_Data() {
 
     getnodestats=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "getnodestats" }' -H 'content-type: application/json' "$END_POINT" | jq .result)
     getnodeinfo=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "getnodeinfo" }' -H 'content-type: application/json' "$END_POINT" | jq '.result | .is_miner,.is_syncing' )
-    peers_connected=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "getconnectioncount" }' -H 'content-type: application/json' "$END_POINT" | jq -r .result)
+    peers_connected=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "getconnectedpeers" }' -H 'content-type: application/json' "$END_POINT" | jq -r .result)
     leaderboard=$(curl -s  curl https://www.aleo.network/api/leaderboard?search=$(grep "\-\-miner aleo" /etc/systemd/system/aleod-miner.service | grep -Eo "aleo.+"))
     
 }
