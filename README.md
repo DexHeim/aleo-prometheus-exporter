@@ -11,7 +11,7 @@ Couple of settings in dashboard require node-exporter ( set port for it in prome
 ### Installation:
 
 ```bash
-sudo curl -s -L https://raw.githubusercontent.com/matsuro-hadouken/aleo-prometheus-exporter/main/install.sh | bash
+sudo curl -s -L https://raw.githubusercontent.com/DexHeim/aleo-prometheus-exporter/main/install.sh | bash
 ```
 
 _Default port: 9101 otherwise adjust, check install.sh script for more insformation._
