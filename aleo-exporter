@@ -24,16 +24,16 @@ function metrics_collector() {
     is_miner="${nodeinfo_arr[0]}"
     is_syncing="${nodeinfo_arr[1]}"
 
-    if [[ $is_miner =~ "Miner" ]]; then
-        aleo_nodeinfo_is_miner=0
-    else
+    if [[ $is_miner == "Miner" ]]; then
         aleo_nodeinfo_is_miner=1
+    else
+        aleo_nodeinfo_is_miner=0
     fi
 
-    if [[ $is_syncing =~ "Syncing" ]]; then
-        aleo_nodeinfo_is_syncing=0
-    else
+    if [[ $is_syncing == "Syncing" ]]; then
         aleo_nodeinfo_is_syncing=1
+    else
+        aleo_nodeinfo_is_syncing=0
     fi
     
     aleo_nodeinfo_latest_block_height="${nodeinfo_arr[2]}"
