@@ -5,10 +5,10 @@
 # wget condition doesn't work for xinet.d content, need to fix
 
 # '$EXPORTER_END_POINT' for serving metrics. We will use this variable here only to check if installation complete successfully.
-# Default port in repository is 9100, if this does not fit, edit '/etc/xinet.d/aleo-exporter' and change 'port = 9100' according setup requirements.
+# Default port in repository is 9101, if this does not fit, edit '/etc/xinet.d/aleo-exporter' and change 'port = 9100' according setup requirements.
 # If port is busy for whatever reason, endpoint will not be up and curl shows nothing.
 
-EXPORTER_END_POINT="127.0.0.1:9100"
+EXPORTER_END_POINT="127.0.0.1:9101"
 
 # node RPC ( default 3032 )
 NODE_RPC="http://127.0.0.1:3032"
