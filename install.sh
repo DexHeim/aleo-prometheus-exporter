@@ -86,7 +86,7 @@ if ! [ -f "/opt/metrics.d/aleo-exporter" ]; then
 else
     echo "Updating /opt/metrics.d/aleo-exporter..."
     rm /opt/metrics.d/aleo-exporter
-    sudo wget --no-check-certificate https://raw.githubusercontent.com/DexHeim/aleo-prometheus-exporter/main/aleo-exporter -q --show-progress --progress=bar:force -P /opt/metrics.d/ 2>&
+    sudo wget --no-check-certificate https://raw.githubusercontent.com/DexHeim/aleo-prometheus-exporter/main/aleo-exporter -q --show-progress --progress=bar:force -P /opt/metrics.d/ 2>&1
 fi
 
 # download http wrapper
