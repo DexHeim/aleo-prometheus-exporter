@@ -5,7 +5,7 @@ metrics_db="/opt/metrics.d/aleo.metrics"
 
 export PATH="/usr/local/bin:$PATH"
 
-END_POINT="http:/127.0.0.1:3030/"
+END_POINT="http:/127.0.0.1:3032/"
 
 re='^[0-9]+$'
 
