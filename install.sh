@@ -71,7 +71,7 @@ fi
 
 # download xinetd service configuration
 if ! [ -f "/etc/xinetd.d/aleo-exporter" ]; then
-    sudo wget --no-check-certificate https://raw.githubusercontent.com/matsuro-hadouken/aleo-prometheus-exporter/main/aleo-exporter.conf -q --show-progress --progress=bar:force -P /etc/xinetd.d/ 2>&1
+    sudo wget --no-check-certificate https://raw.githubusercontent.com/DexHeim/aleo-prometheus-exporter/main/aleo-exporter.conf -q --show-progress --progress=bar:force -P /etc/xinetd.d/ 2>&1
     sudo mv /etc/xinetd.d/aleo-exporter.conf /etc/xinetd.d/aleo-exporter
 else
     echo " File aleo-exporter already exist at path /etc/xinetd.d/aleo-exporter, download canceled."
@@ -79,14 +79,14 @@ fi
 
 # download exporter
 if ! [ -f "/opt/metrics.d/aleo-exporter" ]; then
-    sudo wget --no-check-certificate https://raw.githubusercontent.com/matsuro-hadouken/aleo-prometheus-exporter/main/aleo-exporter -q --show-progress --progress=bar:force -P /opt/metrics.d/ 2>&1
+    sudo wget --no-check-certificate https://raw.githubusercontent.com/DexHeim/aleo-prometheus-exporter/main/aleo-exporter -q --show-progress --progress=bar:force -P /opt/metrics.d/ 2>&1
 else
     echo " File aleo-exporter already exist at path /opt/metrics.d/aleo-exporter, download canceled."
 fi
 
 # download http wrapper
 if ! [ -f "/opt/metrics.d/httpwrapper" ]; then
-    sudo wget --no-check-certificate https://raw.githubusercontent.com/matsuro-hadouken/aleo-prometheus-exporter/main/httpwrapper -q --show-progress --progress=bar:force -P /opt/metrics.d/ 2>&1
+    sudo wget --no-check-certificate https://raw.githubusercontent.com/DexHeim/aleo-prometheus-exporter/main/httpwrapper -q --show-progress --progress=bar:force -P /opt/metrics.d/ 2>&1
 else
     echo " File httpwrapper already exist at path /opt/metrics.d/httpwrapper, download canceled."
 fi
