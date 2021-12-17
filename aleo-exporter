@@ -285,18 +285,25 @@ aleo_internal_rtt_getpeers $aleo_internal_rtt_getpeers
 aleo_internal_rtt_getsync $aleo_internal_rtt_getsync
 # HELP aleo_leaderboard_position
 # TYPE aleo_leaderboard_position gauge
+aleo_leaderboard_position $aleo_leaderboard_position
 # HELP aleo_leaderboard_cnt_users
 # TYPE aleo_leaderboard_cnt_users gauge
+aleo_leaderboard_cnt_users $aleo_leaderboard_cnt_users
 # HELP aleo_leaderboard_cnt_blocks_mined
 # TYPE aleo_leaderboard_cnt_blocks_mined gauge
+aleo_leaderboard_cnt_blocks_mined $aleo_leaderboard_cnt_blocks_mined
 # HELP aleo_leaderboard_last_block_mined
 # TYPE aleo_leaderboard_last_block_mined gauge
+aleo_leaderboard_last_block_mined $aleo_leaderboard_last_block_mined
 # HELP aleo_leaderboard_score
 # TYPE aleo_leaderboard_score gauge
+aleo_leaderboard_score $aleo_leaderboard_score
 # HELP aleo_leaderboard_calibration_score
 # TYPE aleo_leaderboard_calibration_score gauge
+aleo_leaderboard_calibration_score $aleo_leaderboard_calibration_score
 # HELP aleo_leaderboard_block_heigh
 # TYPE aleo_leaderboard_block_heigh gauge
+aleo_leaderboard_block_heigh $aleo_leaderboard_block_heigh
 EOF
 
 }
