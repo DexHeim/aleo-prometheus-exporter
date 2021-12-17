@@ -18,90 +18,8 @@ function get_Data() {
 }
 
 function metrics_collector() {
-
-    # connections
-    IFS=' ' read -r -a connections_arr <<<$(echo $(echo "$getnodestats" | jq '.connections | .all_accepted,.all_initiated,.all_rejected,.connected_peers,.connecting_peers,.disconnected_peers,.average_duration'))
-
-    aleo_connections_all_accepted="${connections_arr[0]}"
-    aleo_connections_all_initiated="${connections_arr[1]}"
-    aleo_connections_all_rejected="${connections_arr[2]}"
-    aleo_connections_connected_peers="${connections_arr[3]}"
-    aleo_connections_connecting_peers="${connections_arr[4]}"
-    aleo_connections_disconnected_peers="${connections_arr[5]}"
-    aleo_connections_average_duration="${connections_arr[6]}"
-
-    # handshakes
-    IFS=' ' read -r -a handshakes_arr <<<$(echo $(echo "$getnodestats" |   jq '.handshakes | .failures_init,.failures_resp,.successes_init,.successes_resp,.timeouts_init,.timeouts_resp'))
-
-    aleo_handshakes_failures_init="${handshakes_arr[0]}"
-    aleo_handshakes_failures_resp="${handshakes_arr[1]}"
-    aleo_handshakes_successes_init="${handshakes_arr[2]}"
-    aleo_handshakes_successes_resp="${handshakes_arr[3]}"
-    aleo_handshakes_timeouts_init="${handshakes_arr[4]}"
-    aleo_handshakes_timeouts_resp="${handshakes_arr[5]}"
-
-    # inbound
-    IFS=' ' read -r -a inbound_arr <<<$(echo $(echo "$getnodestats" | jq '.inbound | .all_failures,.all_successes,.blocks,.getblocks,.getmemorypool,.getpeers,.getsync,.memorypool,.peers,.pings,.pongs,.syncblocks,.syncs,.transactions,.unknown'))   
-
-    aleo_inbound_all_failures="${inbound_arr[0]}"
-    aleo_inbound_all_successes="${inbound_arr[1]}"
-    aleo_inbound_blocks="${inbound_arr[2]}"
-    aleo_inbound_getblocks="${inbound_arr[3]}"
-    aleo_inbound_getmemorypool="${inbound_arr[4]}"
-    aleo_inbound_getpeers="${inbound_arr[5]}"
-    aleo_inbound_getsync="${inbound_arr[6]}"
-    aleo_inbound_memorypool="${inbound_arr[7]}"
-    aleo_inbound_peers="${inbound_arr[8]}"
-    aleo_inbound_pings="${inbound_arr[9]}"
-    aleo_inbound_pongs="${inbound_arr[10]}"
-    aleo_inbound_syncblocks="${inbound_arr[11]}"
-    aleo_inbound_syncs="${inbound_arr[12]}"
-    aleo_inbound_transactions="${inbound_arr[13]}"
-    aleo_inbound_unknown="${inbound_arr[14]}"
-
-    # internal_rtt
-    IFS=' ' read -r -a internal_rtt_arr <<<$(echo $(echo "$getnodestats" |  jq '.internal_rtt | .getblocks,.getmemorypool,.getpeers,.getsync'))
-
-    aleo_internal_rtt_getblocks="${internal_rtt_arr[0]}"
-
-        # fix bug in json field
-        if ! [[ "${internal_rtt_arr[1]}" =~ $re ]] ; then
-            aleo_internal_rtt_getmemorypool=0
-        else
-            aleo_internal_rtt_getmemorypool="${internal_rtt_arr[1]}"
-        fi
-
-    aleo_internal_rtt_getpeers="${internal_rtt_arr[2]}"
-    aleo_internal_rtt_getsync="${internal_rtt_arr[3]}"
-
-    # misc
-    IFS=' ' read -r -a misc_arr <<<$(echo $(echo "$getnodestats" |  jq '.misc | .block_height,.blocks_mined,.duplicate_blocks,.duplicate_sync_blocks,.orphan_blocks,.rpc_requests,.block_processing_time'))
-
-    aleo_misc_block_height="${misc_arr[0]}"
-    aleo_misc_blocks_mined="${misc_arr[1]}"
-    aleo_misc_duplicate_blocks="${misc_arr[2]}"
-    aleo_misc_duplicate_sync_blocks="${misc_arr[3]}"
-    aleo_misc_orphan_blocks="${misc_arr[4]}"
-    aleo_misc_rpc_requests="${misc_arr[5]}"
-    aleo_misc_block_processing_time="${misc_arr[6]}"
-
-    # outbound
-    IFS=' ' read -r -a outbound_arr <<<$(echo $(echo "$getnodestats" | jq '.outbound | .all_failures,.all_successes'))
-    aleo_outbound_all_failures="${outbound_arr[0]}"
-    aleo_outbound_all_successes="${outbound_arr[1]}"
-
-    # queues
-    IFS=' ' read -r -a queues_arr <<<$(echo $(echo "$getnodestats" | jq '.queues | .inbound,.outbound,.consensus,.peer_events,.storage,.sync_items'))
-
-    aleo_queues_inbound="${queues_arr[0]}"
-    aleo_queues_outbound="${queues_arr[1]}"
-    aleo_queues_consensus="${queues_arr[2]}"
-    aleo_queues_peer_events="${queues_arr[3]}"
-    aleo_queues_storage="${queues_arr[4]}"
-    aleo_queues_sync_items="${queues_arr[5]}"
-
     # nodeinfo
-    IFS=' ' read -r -a nodeinfo_arr <<<$(echo $(echo "$getnodestats" | jq '.type,.status'))
+    IFS=' ' read -r -a nodeinfo_arr <<<$(echo $(echo "$getnodestats" | jq '.type,.status,.latest_block_height,.latest_cumulative_weight,.number_of_candidate_peers,.number_of_connected_peers,.number_of_connected_sync_nodes,.version'))
 
     is_miner="${nodeinfo_arr[0]}"
     is_syncing="${nodeinfo_arr[1]}"
@@ -118,6 +36,13 @@ function metrics_collector() {
         aleo_nodeinfo_is_syncing=1
     fi
     
+    aleo_nodeinfo_latest_block_height="${nodeinfo_arr[2]}"
+    aleo_nodeinfo_latest_cumulative_weight="${nodeinfo_arr[3]}"
+    aleo_nodeinfo_number_of_candidate_peers="${nodeinfo_arr[4]}"
+    aleo_nodeinfo_number_of_connected_peers="${nodeinfo_arr[5]}"
+    aleo_nodeinfo_number_of_connected_sync_nodes="${nodeinfo_arr[6]}"
+    aleo_nodeinfo_version="${nodeinfo_arr[7]}"
+    
     #leaderboard
     aleo_leaderboard_position=$(echo $leaderboard | jq ".leaderboard[0].position")
     aleo_leaderboard_cnt_users=$(echo $leaderboard | jq ".count")
@@ -132,156 +57,32 @@ function metrics_collector() {
 function prometheus_constructor() {
 
     cat <<EOF >/opt/metrics.d/aleo.metrics
-# HELP aleo_node_currently_connected_peers
-# TYPE aleo_node_currently_connected_peers gauge
-aleo_node_currently_connected_peers $peers_connected
-# HELP aleo_connections_all_accepted
-# TYPE aleo_connections_all_accepted gauge
-aleo_connections_all_accepted $aleo_connections_all_accepted
-# HELP aleo_connections_all_initiated
-# TYPE aleo_connections_all_initiated gauge
-aleo_connections_all_initiated $aleo_connections_all_initiated
-# HELP aleo_connections_all_rejected
-# TYPE aleo_connections_all_rejected gauge
-aleo_connections_all_rejected $aleo_connections_all_rejected
-# HELP aleo_connections_average_duration
-# TYPE aleo_connections_average_duration gauge
-aleo_connections_average_duration $aleo_connections_average_duration
-# HELP aleo_connections_connected_peers
-# TYPE aleo_connections_connected_peers gauge
-aleo_connections_connected_peers $aleo_connections_connected_peers
-# HELP aleo_connections_connecting_peers
-# TYPE aleo_connections_connecting_peers gauge
-aleo_connections_connecting_peers $aleo_connections_connecting_peers
-# HELP aleo_connections_disconnected_peers
-# TYPE aleo_connections_disconnected_peers gauge
-aleo_connections_disconnected_peers $aleo_connections_disconnected_peers
-# HELP aleo_handshakes_failures_init
-# TYPE aleo_handshakes_failures_init gauge
-aleo_handshakes_failures_init $aleo_handshakes_failures_init
-# HELP aleo_handshakes_failures_resp
-# TYPE aleo_handshakes_failures_resp gauge
-aleo_handshakes_failures_resp $aleo_handshakes_failures_resp
-# HELP aleo_handshakes_successes_init
-# TYPE aleo_handshakes_successes_init gauge
-aleo_handshakes_successes_init $aleo_handshakes_successes_init
-# HELP aleo_handshakes_successes_resp
-# TYPE aleo_handshakes_successes_resp gauge
-aleo_handshakes_successes_resp $aleo_handshakes_successes_resp
-# HELP aleo_handshakes_timeouts_init
-# TYPE aleo_handshakes_timeouts_init gauge
-aleo_handshakes_timeouts_init $aleo_handshakes_timeouts_init
-# HELP aleo_handshakes_timeouts_resp
-# TYPE aleo_handshakes_timeouts_resp gauge
-aleo_handshakes_timeouts_resp $aleo_handshakes_timeouts_resp
-# HELP aleo_inbound_all_failures
-# TYPE aleo_inbound_all_failures gauge
-aleo_inbound_all_failures $aleo_inbound_all_failures
-# HELP aleo_inbound_all_successes
-# TYPE aleo_inbound_all_successes gauge
-aleo_inbound_all_successes $aleo_inbound_all_successes
-# HELP aleo_inbound_blocks
-# TYPE aleo_inbound_blocks gauge
-aleo_inbound_blocks $aleo_inbound_blocks
-# HELP aleo_inbound_getblocks
-# TYPE aleo_inbound_getblocks gauge
-aleo_inbound_getblocks $aleo_inbound_getblocks
-# HELP aleo_inbound_getmemorypool
-# TYPE aleo_inbound_getmemorypool gauge
-aleo_inbound_getmemorypool $aleo_inbound_getmemorypool
-# HELP aleo_inbound_getpeers
-# TYPE aleo_inbound_getpeers gauge
-aleo_inbound_getpeers $aleo_inbound_getpeers
-# HELP aleo_inbound_getsync
-# TYPE aleo_inbound_getsync gauge
-aleo_inbound_getsync $aleo_inbound_getsync
-# HELP aleo_inbound_memorypool
-# TYPE aleo_inbound_memorypool gauge
-aleo_inbound_memorypool $aleo_inbound_memorypool
-# HELP aleo_inbound_peers
-# TYPE aleo_inbound_peers gauge
-aleo_inbound_peers $aleo_inbound_peers
-# HELP aleo_inbound_pings
-# TYPE aleo_inbound_pings gauge
-aleo_inbound_pings $aleo_inbound_pings
-# HELP aleo_inbound_pongs
-# TYPE aleo_inbound_pongs gauge
-aleo_inbound_pongs $aleo_inbound_pongs
-# HELP aleo_inbound_syncblocks
-# TYPE aleo_inbound_syncblocks gauge
-aleo_inbound_syncblocks $aleo_inbound_syncblocks
-# HELP aleo_inbound_syncs
-# TYPE aleo_inbound_syncs gauge
-aleo_inbound_syncs $aleo_inbound_syncs
-# HELP aleo_inbound_transactions
-# TYPE aleo_inbound_transactions gauge
-aleo_inbound_transactions $aleo_inbound_transactions
-# HELP aleo_inbound_unknown
-# TYPE aleo_inbound_unknown gauge
-aleo_inbound_unknown $aleo_inbound_unknown
-# HELP aleo_misc_block_height
-# TYPE aleo_misc_block_height gauge
-aleo_misc_block_height $aleo_misc_block_height
-# HELP aleo_misc_block_processing_time
-# TYPE aleo_misc_block_processing_time gauge
-aleo_misc_block_processing_time $aleo_misc_block_processing_time
-# HELP aleo_misc_blocks_mined
-# TYPE aleo_misc_blocks_mined gauge
-aleo_misc_blocks_mined $aleo_misc_blocks_mined
-# HELP aleo_misc_duplicate_blocks
-# TYPE aleo_misc_duplicate_blocks gauge
-aleo_misc_duplicate_blocks $aleo_misc_duplicate_blocks
-# HELP aleo_misc_duplicate_sync_blocks
-# TYPE aleo_misc_duplicate_sync_blocks gauge
-aleo_misc_duplicate_sync_blocks $aleo_misc_duplicate_sync_blocks
-# HELP aleo_misc_orphan_blocks
-# TYPE aleo_misc_orphan_blocks gauge
-aleo_misc_orphan_blocks $aleo_misc_orphan_blocks
-# HELP aleo_misc_rpc_requests
-# TYPE aleo_misc_rpc_requests gauge
-aleo_misc_rpc_requests $aleo_misc_rpc_requests
-# HELP aleo_outbound_all_failures
-# TYPE aleo_outbound_all_failures gauge
-aleo_outbound_all_failures $aleo_outbound_all_failures
-# HELP aleo_outbound_all_successes
-# TYPE aleo_outbound_all_successes gauge
-aleo_outbound_all_successes $aleo_outbound_all_successes
-# HELP aleo_queues_inbound
-# TYPE aleo_queues_inbound gauge
-aleo_queues_inbound $aleo_queues_inbound
-# HELP aleo_queues_outbound
-# TYPE aleo_queues_outbound gauge
-aleo_queues_outbound $aleo_queues_outbound
-# HELP aleo_queues_consensus
-# TYPE aleo_queues_consensus gauge
-aleo_queues_consensus $aleo_queues_consensus
-# HELP aleo_queues_peer_events
-# TYPE aleo_queues_peer_events gauge
-aleo_queues_peer_events $aleo_queues_peer_events
-# HELP aleo_queues_storage
-# TYPE aleo_queues_storage gauge
-aleo_queues_storage $aleo_queues_storage
-# HELP aleo_queues_sync_items
-# TYPE aleo_queues_sync_items gauge
-aleo_queues_sync_items $aleo_queues_sync_items
 # HELP aleo_nodeinfo_is_miner
 # TYPE aleo_nodeinfo_is_miner gauge
 aleo_nodeinfo_is_miner $aleo_nodeinfo_is_miner
 # HELP aleo_nodeinfo_is_syncing
 # TYPE aleo_nodeinfo_is_syncing gauge
 aleo_nodeinfo_is_syncing $aleo_nodeinfo_is_syncing
-# HELP aleo_internal_rtt_getblocks
-# TYPE aleo_internal_rtt_getblocks gauge
-aleo_internal_rtt_getblocks $aleo_internal_rtt_getblocks
-# HELP aleo_internal_rtt_getmemorypool
-# TYPE aleo_internal_rtt_getmemorypool gauge
-aleo_internal_rtt_getmemorypool $aleo_internal_rtt_getmemorypool
-# HELP aleo_internal_rtt_getpeers
-# TYPE aleo_internal_rtt_getpeers gauge
-aleo_internal_rtt_getpeers $aleo_internal_rtt_getpeers
-# HELP aleo_internal_rtt_getsync
-# TYPE aleo_internal_rtt_getsync gauge
-aleo_internal_rtt_getsync $aleo_internal_rtt_getsync
+
+# HELP aleo_nodeinfo_latest_block_height
+# TYPE aleo_nodeinfo_latest_block_height gauge
+aleo_nodeinfo_latest_block_height $aleo_nodeinfo_latest_block_height
+# HELP aleo_nodeinfo_latest_cumulative_weight
+# TYPE aleo_nodeinfo_latest_cumulative_weight gauge
+aleo_nodeinfo_latest_cumulative_weight $aleo_nodeinfo_latest_cumulative_weight
+# HELP aleo_nodeinfo_number_of_candidate_peers
+# TYPE aleo_nodeinfo_number_of_candidate_peers gauge
+aleo_nodeinfo_number_of_candidate_peers $aleo_nodeinfo_number_of_candidate_peers
+# HELP aleo_nodeinfo_number_of_connected_peers
+# TYPE aleo_nodeinfo_number_of_connected_peers gauge
+aleo_nodeinfo_number_of_connected_peers $aleo_nodeinfo_number_of_connected_peers
+# HELP aleo_nodeinfo_number_of_connected_sync_nodes
+# TYPE aleo_nodeinfo_number_of_connected_sync_nodes gauge
+aleo_nodeinfo_number_of_connected_sync_nodes $aleo_nodeinfo_number_of_connected_sync_nodes
+# HELP aleo_nodeinfo_version
+# TYPE aleo_nodeinfo_version gauge
+aleo_nodeinfo_version $aleo_nodeinfo_version
+
 # HELP aleo_leaderboard_position
 # TYPE aleo_leaderboard_position gauge
 aleo_leaderboard_position $aleo_leaderboard_position
