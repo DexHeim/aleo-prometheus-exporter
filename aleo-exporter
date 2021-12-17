@@ -11,8 +11,7 @@ re='^[0-9]+$'
 
 function get_Data() {
 
-    getnodestats=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "getnodestats" }' -H 'content-type: application/json' "$END_POINT" | jq .result)
-    getnodeinfo=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "getnodestate" }' -H 'content-type: application/json' "$END_POINT" | jq '.result | .is_miner,.is_syncing' )
+    getnodestats=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "getnodestate" }' -H 'content-type: application/json' "$END_POINT" | jq .result)
     peers_connected=$(curl -s --data-binary '{"jsonrpc": "2.0", "id":"documentation", "method": "getconnectedpeers" }' -H 'content-type: application/json' "$END_POINT" | jq -r .result)
     leaderboard=$(curl -s  curl https://www.aleo.network/api/leaderboard?search=$(grep "\-\-miner aleo" /etc/systemd/system/aleod-miner.service | grep -Eo "aleo.+"))
     
@@ -102,18 +101,18 @@ function metrics_collector() {
     aleo_queues_sync_items="${queues_arr[5]}"
 
     # nodeinfo
-    IFS=' ' read -r -a nodeinfo_arr <<<$(echo $getnodeinfo)
+    IFS=' ' read -r -a nodeinfo_arr <<<$(echo $(echo "$getnodestats" | jq '.type,.status'))
 
     is_miner="${nodeinfo_arr[0]}"
     is_syncing="${nodeinfo_arr[1]}"
 
-    if [[ $is_miner =~ "false" ]]; then
+    if [[ $is_miner =~ "Miner" ]]; then
         aleo_nodeinfo_is_miner=0
     else
         aleo_nodeinfo_is_miner=1
     fi
 
-    if [[ $is_syncing =~ "false" ]]; then
+    if [[ $is_syncing =~ "Syncing" ]]; then
         aleo_nodeinfo_is_syncing=0
     else
         aleo_nodeinfo_is_syncing=1
