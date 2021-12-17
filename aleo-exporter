@@ -118,6 +118,15 @@ function metrics_collector() {
     else
         aleo_nodeinfo_is_syncing=1
     fi
+    
+    #leaderboard
+    aleo_leaderboard_position = $(echo $leaderboard | jq ".leaderboard[0].position")
+    aleo_leaderboard_cnt_users = $(echo $leaderboard | jq ".count")
+    aleo_leaderboard_cnt_blocks_mined=$(echo $leaderboard | jq ".leaderboard[0].blocksMined | length")
+    aleo_leaderboard_last_block_mined=$(echo $leaderboard | jq ".leaderboard[0].lastBlockMined")
+    aleo_leaderboard_score=$(echo $leaderboard | jq ".leaderboard[0].score")
+    aleo_leaderboard_calibration_score=$(echo $leaderboard | jq ".leaderboard[0].calibrationScore")
+    aleo_leaderboard_block_heigh=$(echo $leaderboard | jq ".blockHeight")
 
 }
 
@@ -274,6 +283,20 @@ aleo_internal_rtt_getpeers $aleo_internal_rtt_getpeers
 # HELP aleo_internal_rtt_getsync
 # TYPE aleo_internal_rtt_getsync gauge
 aleo_internal_rtt_getsync $aleo_internal_rtt_getsync
+# HELP aleo_leaderboard_position
+# TYPE aleo_leaderboard_position gauge
+# HELP aleo_leaderboard_cnt_users
+# TYPE aleo_leaderboard_cnt_users gauge
+# HELP aleo_leaderboard_cnt_blocks_mined
+# TYPE aleo_leaderboard_cnt_blocks_mined gauge
+# HELP aleo_leaderboard_last_block_mined
+# TYPE aleo_leaderboard_last_block_mined gauge
+# HELP aleo_leaderboard_score
+# TYPE aleo_leaderboard_score gauge
+# HELP aleo_leaderboard_calibration_score
+# TYPE aleo_leaderboard_calibration_score gauge
+# HELP aleo_leaderboard_block_heigh
+# TYPE aleo_leaderboard_block_heigh gauge
 EOF
 
 }
